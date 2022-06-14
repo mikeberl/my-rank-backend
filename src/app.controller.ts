@@ -1,14 +1,15 @@
 import { Body, Controller, Get, Param, Post, Request, UseGuards } from '@nestjs/common';
+import { map, Observable } from 'rxjs';
 import { AppService } from './app.service';
 import { AuthService } from './auth/auth.service';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
 import { LocalAuthGuard } from './auth/local-auth.guard';
-import { User, UsersService } from './users/users.service';
+import { User } from './users/user.interface';
+import { UsersService } from './users/users.service';
 
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService,
-              private readonly authService: AuthService,
               private readonly userService: UsersService) {}
   
   // test not important
@@ -18,11 +19,16 @@ export class AppController {
     return this.appService.getHello();
   }
 
+  @Get('')
+  getHelloTest(@Request() req) : string {
+    return this.appService.getHello();
+  }
+
   // get one single user by id
   @UseGuards(JwtAuthGuard)            
   @Get('user')
   getUserById(@Body('id') id)  {
-    return this.userService.getUser(id);
+    return this.userService.getUserById(id);
   }
 
   // get all the used username (usefull for the register section)
@@ -37,12 +43,24 @@ export class AppController {
   }
 
   // returns all the infos of the logged user and an access token
-  @UseGuards(LocalAuthGuard)
-  @Post('login')
-  login(@Request() req) : any {
-    console.log(req.user);
-    return this.authService.login(req.user);
-  }
+  // @UseGuards(LocalAuthGuard)
+  /* @Post('login')
+  login(@Body() user: User): Observable<Object> {
+    return this.authService.login(user).pipe(
+        map((jwt: string) => {
+            return { access_token: jwt };
+        })
+    )
+} */
+
+@Post('login')
+login(@Body() user: User): Observable<Object> {
+    return this.userService.login(user).pipe(
+        map((jwt: string) => {
+            return { access_token: jwt };
+        })
+    )
+}
 
   @Post('register')
   register(@Body() user) : any {

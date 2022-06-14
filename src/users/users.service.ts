@@ -1,14 +1,7 @@
 import { Injectable } from '@nestjs/common';
-
-export type User = {
-    id : number;
-    name: string;
-    username: string;
-    password: string;
-    img: string | undefined;
-    leagues: string[];
-    email: string;
-}
+import { from, map, Observable, switchMap } from 'rxjs';
+import { AuthService } from 'src/auth/auth.service';
+import { User } from './user.interface';
 
 @Injectable()
 export class UsersService {
@@ -42,13 +35,19 @@ export class UsersService {
         },
     ];
 
+    constructor(private authService: AuthService) {}
+
     async findOne(username : string) : Promise<User | undefined> {
         return this.users.find(user => user.username === username);
     }
 
 
-    async getUser(id: number) {
+    async getUserById(id: number) {
         return this.users.find(user => user.id === id);
+    }
+
+    async getUserByUsername(username: string) {
+        return this.users.find(user => user.username === username);
     }
 
     async getUsernames() {
@@ -74,7 +73,6 @@ export class UsersService {
             }
             i++;
         }
-        console.log("Out: " + i)
         return i;
     }
 
@@ -91,6 +89,32 @@ export class UsersService {
         this.users.push(user);
         console.log(this.users)
         return;
+    }
+
+    login(user: any) {
+        return this.validateUser(user.username, user.password).pipe(
+            switchMap((user: User) => {
+                console.log(user);
+                if(user) {
+                    return this.authService.generateJWT(user).pipe(map((jwt: string) => jwt));
+                } else {
+                    return 'Wrong Credentials';
+                }
+            })
+        )
+    }
+
+    validateUser(username: string, password: string): Observable<User> {
+        return from(this.findOne(username)).pipe(
+                map((user : User) => {
+                    if(user.password === password) {
+                        const {password, ...result} = user;
+                        return result;
+                    } else {
+                        throw Error;
+                    }
+                }
+            ))
     }
 
     async getUsers() {
