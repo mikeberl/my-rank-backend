@@ -47,7 +47,53 @@ export class UsersService {
     }
 
 
-    getUser(id: number) {
+    async getUser(id: number) {
         return this.users.find(user => user.id === id);
+    }
+
+    async getUsernames() {
+        var usernames : string[] = [];
+        for (let u of this.users) {
+            usernames.push(u.username);
+        }
+        return usernames;
+    }
+
+    getNewId() {
+        var i = 0;
+        while (i >= 0) {
+            var check_if_exist = false;
+            for (let u of this.users) {
+                if (i === u.id) {
+                    check_if_exist = true;
+                    break;
+                }
+            }
+            if (check_if_exist === false) {
+                break;
+            }
+            i++;
+        }
+        console.log("Out: " + i)
+        return i;
+    }
+
+    async register(new_user: any) {
+        const user : User = {
+            id: this.getNewId(),
+            name: new_user.name,
+            username: new_user.username,
+            password: new_user.password,
+            img: undefined,
+            leagues : [],
+            email: new_user.email
+        }
+        this.users.push(user);
+        console.log(this.users)
+        return;
+    }
+
+    async getUsers() {
+        return this.users;
     }
 }

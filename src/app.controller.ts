@@ -11,23 +11,44 @@ export class AppController {
               private readonly authService: AuthService,
               private readonly userService: UsersService) {}
   
+  // test not important
   @UseGuards(JwtAuthGuard)            
   @Get('protected')
   getHello(@Request() req) : string {
     return this.appService.getHello();
   }
 
+  // get one single user by id
   @UseGuards(JwtAuthGuard)            
   @Get('user')
-  getUser(@Body('id') id)  {
+  getUserById(@Body('id') id)  {
     return this.userService.getUser(id);
   }
 
+  // get all the used username (usefull for the register section)
+  @Get('usernames')
+  getUsernames(@Request() req)  {
+    return this.userService.getUsernames();
+  }
+
+  @Get('users')
+  getUsers()  {
+    return this.userService.getUsers();
+  }
+
+  // returns all the infos of the logged user and an access token
   @UseGuards(LocalAuthGuard)
   @Post('login')
   login(@Request() req) : any {
     console.log(req.user);
     return this.authService.login(req.user);
+  }
+
+  @Post('register')
+  register(@Body() user) : any {
+    console.log(user);
+    this.userService.register(user);
+    return;
   }
 
 }
