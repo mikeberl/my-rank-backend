@@ -13,6 +13,10 @@ export class AuthService {
         return from(this.jwtService.signAsync({user}));
     }
 
+    generateJWT2(user: User): string {
+        return this.jwtService.sign({user});
+    }
+
     hashPassword(password: string): Observable <string> {
         return from<string>(bcrypt.hash(password, 12));
 

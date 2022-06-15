@@ -37,6 +37,7 @@ export class AppController {
     return this.userService.getUsernames();
   }
 
+  // get all users
   @Get('users')
   getUsers()  {
     return this.userService.getUsers();
@@ -56,8 +57,9 @@ export class AppController {
 @Post('login')
 login(@Body() user: User): Observable<Object> {
     return this.userService.login(user).pipe(
-        map((jwt: string) => {
-            return { access_token: jwt };
+        map((user: User) => {
+            console.log(user);
+            return { user: user };
         })
     )
 }

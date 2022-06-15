@@ -7,11 +7,12 @@ export interface User {
     img?: string | undefined;
     leagues?: string[];
     email?: string;
+    access_token?: string;
 }
 
-export enum UserRole {
+/* export enum UserRole {
     ADMIN = 'admin',
     CHIEFEDITOR = 'chiefeditor',    
     EDITOR = 'editor',
     USER = 'user'
-}
+} */

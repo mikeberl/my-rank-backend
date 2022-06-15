@@ -93,10 +93,20 @@ export class UsersService {
 
     login(user: any) {
         return this.validateUser(user.username, user.password).pipe(
-            switchMap((user: User) => {
+            /* switchMap((user: User) => {
                 console.log(user);
                 if(user) {
-                    return this.authService.generateJWT(user).pipe(map((jwt: string) => jwt));
+                    user.access_token = this.authService.generateJWT2(user);
+                    return user;
+                } else {
+                    return 'Wrong Credentials';
+                }
+            }) */
+            map((user: User) => {
+                console.log(user);
+                if(user) {
+                    user.access_token = this.authService.generateJWT2(user);
+                    return user;
                 } else {
                     return 'Wrong Credentials';
                 }
