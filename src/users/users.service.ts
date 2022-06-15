@@ -10,7 +10,8 @@ export class UsersService {
             id: 0,
             name: 'Michele',
             username: 'Mike',
-            password: this.authService.hashPassword2('111'),
+            password: '111',
+            //password: this.authService.hashPassword2('111'),
             img: undefined,
             leagues : [],
             email: 'berlanda94@gmail.com'
@@ -19,7 +20,8 @@ export class UsersService {
             id: 1,
             name: 'Marco',
             username: 'mm',
-            password: this.authService.hashPassword2('222'),
+            password: '222',
+            //password: this.authService.hashPassword2('222'),
             img: undefined,
             leagues : [],
             email: 'berlanda94@gmail.com'
@@ -28,7 +30,8 @@ export class UsersService {
             id: 3,
             name: 'Rudiger',
             username: 'Scarso',
-            password: this.authService.hashPassword2('password'),
+            password: 'password',
+            //password: this.authService.hashPassword2('password'),
             img: undefined,
             leagues : [],
             email: 'berlanda94@gmail.com'
@@ -81,40 +84,15 @@ export class UsersService {
             id: this.getNewId(),
             name: new_user.name,
             username: new_user.username,
-            password: await this.authService.hashPassword2(new_user.password),
+            password: new_user.password,
+            //password: this.authService.hashPassword2(new_user.password),
             img: undefined,
             leagues : [],
             email: new_user.email
         }
         this.users.push(user);
-        console.log(this.users)
+        // console.log(this.users)
         return;
-    }
-
-    create(user: User): Observable<User> {
-        return this.authService.hashPassword(user.password).pipe(
-            map((passwordHash: string) => {
-                const tmp : User = {
-                    id: this.getNewId(),
-                    name: user.name,
-                    username: user.username,
-                    password: passwordHash,
-                    img: user.img,
-                    leagues : [],
-                    email: user.email
-                }
-                this.users.push(tmp);
-                return tmp;
-
-                /* return from(this.userRepository.save(newUser)).pipe(
-                    map((user: User) => {
-                        const {password, ...result} = user;
-                        return result;
-                    }),
-                    catchError(err => throwError(err))
-                ) */
-            })
-        )
     }
 
     login(user: any) {
@@ -136,7 +114,8 @@ export class UsersService {
             
                 map((user : User) => {
                     // TODO : saved_ password is possibly null, warning
-                    if(this.authService.comparePasswords2(password, user.password)) {
+                    //if(this.authService.comparePasswords2(password, user.password)) {
+                    if (password === user.password) {
                         const {password, ...result} = user;
                         return result;
                     } else {

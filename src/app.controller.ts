@@ -58,17 +58,15 @@ export class AppController {
 login(@Body() user: User): Observable<Object> {
     return this.userService.login(user).pipe(
         map((user: User) => {
-            console.log(user);
+            // console.log(user);
             return { user: user };
         })
     )
 }
 
   @Post('register')
-  register(@Body() user) : any {
-    console.log(user);
-    this.userService.register(user);
-    return;
+  register(@Body() body : any) : any {
+    return this.userService.register(body.user);
   }
 
 }

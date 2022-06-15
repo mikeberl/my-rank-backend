@@ -4,6 +4,11 @@ import { Observable, from, of } from 'rxjs';
 import { User } from 'src/users/user.interface';
 const bcrypt = require('bcrypt');
 
+
+// for the whole class:
+// normalFunctionName() is async and return an observable
+// normalFunctionName()2 is sync and return directly an object
+
 @Injectable()
 export class AuthService {
 
