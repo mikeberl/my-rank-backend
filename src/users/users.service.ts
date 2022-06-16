@@ -128,4 +128,30 @@ export class UsersService {
     async getUsers() {
         return this.users;
     }
+
+    editName(id : number, name : string) {
+        return true;
+    }
+
+    editUsername(id : number, username : string) {
+        return true;
+    }
+
+    editPassword(id : number, password : string) {
+        return true;
+    }
+
+    joinLeague(id : number, league : string) {
+        return true;
+    }
+
+    leaveLeague(id : number, league : string) {
+        return true;
+    }
+
+    refreshAccessToken(id : number, username : string, password : string) {
+        return true;
+    }
+
+
 }
