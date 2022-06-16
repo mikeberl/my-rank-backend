@@ -4,7 +4,7 @@ import { AppService } from './app.service';
 import { AuthService } from './auth/auth.service';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
 import { LocalAuthGuard } from './auth/local-auth.guard';
-import { User } from './users/user.interface';
+import { User } from './users/models/user.interface';
 import { UsersService } from './users/users.service';
 
 @Controller()

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { from, map, Observable, switchMap } from 'rxjs';
 import { AuthService } from 'src/auth/auth.service';
-import { User } from './user.interface';
+import { User } from './models/user.interface';
 
 @Injectable()
 export class UsersService {
