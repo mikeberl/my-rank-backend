@@ -1,72 +1,12 @@
-import { Body, Controller, Get, Param, Post, Request, UseGuards } from '@nestjs/common';
-import { map, Observable } from 'rxjs';
+import { Controller, Get } from '@nestjs/common';
 import { AppService } from './app.service';
-import { AuthService } from './auth/auth.service';
-import { JwtAuthGuard } from './auth/jwt-auth.guard';
-import { LocalAuthGuard } from './auth/local-auth.guard';
-import { User } from './users/models/user.interface';
-import { UsersService } from './users/users.service';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService,
-              private readonly userService: UsersService) {}
-  
-  // test not important
-  @UseGuards(JwtAuthGuard)            
-  @Get('protected')
-  getHello(@Request() req) : string {
+  constructor(private readonly appService: AppService) {}
+
+  @Get()
+  getHello(): string {
     return this.appService.getHello();
   }
-
-  @Get('')
-  getHelloTest(@Request() req) : string {
-    return this.appService.getHello();
-  }
-
-  // get one single user by id
-  @UseGuards(JwtAuthGuard)            
-  @Get('user')
-  getUserById(@Body('id') id)  {
-    return this.userService.getUserById(id);
-  }
-
-  // get all the used username (usefull for the register section)
-  @Get('usernames')
-  getUsernames(@Request() req)  {
-    return this.userService.getUsernames();
-  }
-
-  // get all users
-  @Get('users')
-  getUsers()  {
-    return this.userService.getUsers();
-  }
-
-  // returns all the infos of the logged user and an access token
-  // @UseGuards(LocalAuthGuard)
-  /* @Post('login')
-  login(@Body() user: User): Observable<Object> {
-    return this.authService.login(user).pipe(
-        map((jwt: string) => {
-            return { access_token: jwt };
-        })
-    )
-} */
-
-@Post('login')
-login(@Body() user: User): Observable<Object> {
-    return this.userService.login(user).pipe(
-        map((user: User) => {
-            // console.log(user);
-            return { user: user };
-        })
-    )
-}
-
-  @Post('register')
-  register(@Body() body : any) : any {
-    return this.userService.register(body.user);
-  }
-
 }
