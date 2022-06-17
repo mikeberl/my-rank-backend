@@ -1,5 +1,7 @@
-import { Controller, Get, Param, Put, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
+import { map, Observable } from 'rxjs';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { User } from '../models/user.interface';
 import { UsersService } from './users.service';
 
 @Controller('users')
@@ -9,23 +11,40 @@ export class UsersController {
 
     }
 
-    @UseGuards(JwtAuthGuard) 
+    // get all users
+  @Get()
+  getUsers()  {
+    return this.userService.getUsers();
+  }
+
+    // @UseGuards(JwtAuthGuard)
     @Put('edit-name')
-    editName(@Param() params) {
-        console.log(params.name);
-        return this.userService.editName(params.id, params.name);
+    editName(@Body() body) : Observable<Object> {
+        return this.userService.editName(body.id, body.name).pipe(
+            map((name : string) => {
+                return { name : name};
+            })
+        );
     }
 
     @UseGuards(JwtAuthGuard) 
     @Put('edit-username')
-    editUsername(@Param() params) {
-        return this.userService.editUsername(params.id, params.username);
+    editUsername(@Body() body) {
+        return this.userService.editUsername(body.id, body.username).pipe(
+            map((name : string) => {
+                return { name : name};
+            })
+        );
     }
 
     @UseGuards(JwtAuthGuard) 
     @Put('edit-password')
-    editPassword(@Param() params) {
-        return this.userService.editName(params.id, params.password);
+    editPassword(@Body() body) {
+        return this.userService.editUsername(body.id, body.password).pipe(
+            map((name : string) => {
+                return { name : name};
+            })
+        );
     }
 
     @UseGuards(JwtAuthGuard) 

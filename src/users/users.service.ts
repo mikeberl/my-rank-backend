@@ -1,39 +1,36 @@
 import { Injectable } from '@nestjs/common';
 import { from, map, Observable, switchMap } from 'rxjs';
 import { AuthService } from 'src/auth/auth.service';
-import { User } from './models/user.interface';
+import { User } from '../models/user.interface';
 
 @Injectable()
 export class UsersService {
     private readonly users: User[] = [
         {
-            id: 0,
+            Uid: 0,
             name: 'Michele',
             username: 'Mike',
             password: '111',
             //password: this.authService.hashPassword2('111'),
             img: undefined,
-            leagues : [],
             email: 'berlanda94@gmail.com'
         },
         { 
-            id: 1,
+            Uid: 1,
             name: 'Marco',
             username: 'mm',
             password: '222',
             //password: this.authService.hashPassword2('222'),
             img: undefined,
-            leagues : [],
             email: 'berlanda94@gmail.com'
         },
         {
-            id: 3,
+            Uid: 3,
             name: 'Rudiger',
             username: 'Scarso',
             password: 'password',
             //password: this.authService.hashPassword2('password'),
             img: undefined,
-            leagues : [],
             email: 'berlanda94@gmail.com'
         },
     ];
@@ -45,8 +42,8 @@ export class UsersService {
     }
 
 
-    async getUserById(id: number) {
-        return this.users.find(user => user.id === id);
+    async findOneById(id: number) {
+        return this.users.find(user => user.Uid === id);
     }
 
     async getUserByUsername(username: string) {
@@ -66,7 +63,7 @@ export class UsersService {
         while (i >= 0) {
             var check_if_exist = false;
             for (let u of this.users) {
-                if (i === u.id) {
+                if (i === u.Uid) {
                     check_if_exist = true;
                     break;
                 }
@@ -81,13 +78,12 @@ export class UsersService {
 
     async register(new_user: any) {
         const user : User = {
-            id: this.getNewId(),
+            Uid: this.getNewId(),
             name: new_user.name,
             username: new_user.username,
             password: new_user.password,
             //password: this.authService.hashPassword2(new_user.password),
             img: undefined,
-            leagues : [],
             email: new_user.email
         }
         this.users.push(user);
@@ -130,15 +126,30 @@ export class UsersService {
     }
 
     editName(id : number, name : string) {
-        return true;
+        return from(this.findOneById(id)).pipe(            
+            map((user : User) => {
+                user.name = name;
+                return name;
+            }
+        ))
     }
 
     editUsername(id : number, username : string) {
-        return true;
+        return from(this.findOneById(id)).pipe(            
+            map((user : User) => {
+                user.username = username;
+                return username;
+            }
+        ))
     }
 
     editPassword(id : number, password : string) {
-        return true;
+        return from(this.findOneById(id)).pipe(            
+            map((user : User) => {
+                user.password = password;
+                return password;
+            }
+        ))
     }
 
     joinLeague(id : number, league : string) {

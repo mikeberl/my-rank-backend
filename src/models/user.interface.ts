@@ -1,11 +1,10 @@
 
 export interface User {
-    id? : number;
+    Uid? : number;
     name?: string;
     username?: string;
     password?: string;
     img?: string | undefined;
-    leagues?: string[];
     email?: string;
     access_token?: string;
 }

@@ -1,10 +1,10 @@
-import { Body, Controller, Get, Param, Post, Request, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put, Request, UseGuards } from '@nestjs/common';
 import { map, Observable } from 'rxjs';
 import { AppService } from './app.service';
 import { AuthService } from './auth/auth.service';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
 import { LocalAuthGuard } from './auth/local-auth.guard';
-import { User } from './users/models/user.interface';
+import { User } from './models/user.interface';
 import { UsersService } from './users/users.service';
 
 @Controller()
@@ -28,7 +28,7 @@ export class AppController {
   @UseGuards(JwtAuthGuard)            
   @Get('user')
   getUserById(@Body('id') id)  {
-    return this.userService.getUserById(id);
+    return this.userService.findOneById(id);
   }
 
   // get all the used username (usefull for the register section)
@@ -37,11 +37,6 @@ export class AppController {
     return this.userService.getUsernames();
   }
 
-  // get all users
-  @Get('users')
-  getUsers()  {
-    return this.userService.getUsers();
-  }
 
   // returns all the infos of the logged user and an access token
   // @UseGuards(LocalAuthGuard)
@@ -53,6 +48,8 @@ export class AppController {
         })
     )
 } */
+
+
 
 @Post('login')
 login(@Body() user: User): Observable<Object> {
