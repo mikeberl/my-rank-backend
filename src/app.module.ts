@@ -6,10 +6,12 @@ import { AuthModule } from './auth/auth.module';
 import { UsersController } from './users/users.controller';
 import { LeagueController } from './league/league.controller';
 import { LeagueModule } from './league/league.module';
+import { RegistrationService } from './registration/registration.service';
+import { LeagueService } from './league/league.service';
 
 @Module({
   imports: [UsersModule, AuthModule, LeagueModule],
   controllers: [AppController, UsersController, LeagueController],
-  providers: [AppService],
+  providers: [AppService, RegistrationService, LeagueService],
 })
 export class AppModule {}

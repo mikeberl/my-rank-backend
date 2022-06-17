@@ -12,17 +12,6 @@ export class AppController {
   constructor(private readonly appService: AppService,
               private readonly userService: UsersService) {}
   
-  // test not important
-  @UseGuards(JwtAuthGuard)            
-  @Get('protected')
-  getHello(@Request() req) : string {
-    return this.appService.getHello();
-  }
-
-  @Get('')
-  getHelloTest(@Request() req) : string {
-    return this.appService.getHello();
-  }
 
   // get one single user by id
   @UseGuards(JwtAuthGuard)            
@@ -38,18 +27,6 @@ export class AppController {
   }
 
 
-  // returns all the infos of the logged user and an access token
-  // @UseGuards(LocalAuthGuard)
-  /* @Post('login')
-  login(@Body() user: User): Observable<Object> {
-    return this.authService.login(user).pipe(
-        map((jwt: string) => {
-            return { access_token: jwt };
-        })
-    )
-} */
-
-
 
 @Post('login')
 login(@Body() user: User): Observable<Object> {
@@ -61,7 +38,7 @@ login(@Body() user: User): Observable<Object> {
     )
 }
 
-  @Post('register')
+@Post('register')
   register(@Body() body : any) : any {
     return this.userService.register(body.user);
   }

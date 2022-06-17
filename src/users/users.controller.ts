@@ -17,7 +17,7 @@ export class UsersController {
     return this.userService.getUsers();
   }
 
-    // @UseGuards(JwtAuthGuard)
+    @UseGuards(JwtAuthGuard)
     @Put('edit-name')
     editName(@Body() body) : Observable<Object> {
         return this.userService.editName(body.id, body.name).pipe(

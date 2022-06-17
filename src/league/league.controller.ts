@@ -1,4 +1,22 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Get, Param, UseGuards } from '@nestjs/common';
+import { Observable } from 'rxjs';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { LeagueService } from './league.service';
 
 @Controller('league')
-export class LeagueController {}
+export class LeagueController {
+
+    constructor(private leagueService : LeagueService) {
+
+    }
+
+    /* @UseGuards(JwtAuthGuard)
+    @Get('by-user')
+    editName(@Param() params) : Observable<Object> {
+        return this.leagueService.getLeaguesByUser(params.Uid).pipe(
+            map((name : string) => {
+                return { name : name};
+            })
+        );
+    } */
+}
