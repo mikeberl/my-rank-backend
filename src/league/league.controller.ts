@@ -10,13 +10,9 @@ export class LeagueController {
 
     }
 
-    /* @UseGuards(JwtAuthGuard)
+    @UseGuards(JwtAuthGuard)
     @Get('by-user')
-    editName(@Param() params) : Observable<Object> {
-        return this.leagueService.getLeaguesByUser(params.Uid).pipe(
-            map((name : string) => {
-                return { name : name};
-            })
-        );
-    } */
+    editName(@Param() params) {
+        return this.leagueService.getByUser(params.Uid);
+    }
 }
