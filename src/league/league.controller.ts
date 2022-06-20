@@ -1,18 +1,39 @@
-import { Controller, Get, Param, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query, Request, UseGuards } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { LeagueService } from './league.service';
 
-@Controller('league')
+@Controller('leagues')
 export class LeagueController {
 
     constructor(private leagueService : LeagueService) {
-
     }
 
     @UseGuards(JwtAuthGuard)
     @Get('by-user')
-    editName(@Param() params) {
-        return this.leagueService.getByUser(params.Uid);
+    getByUser(@Query('Uid') Uid) {
+        var tmp = this.leagueService.getByUser(Uid);
+        return { leagues : tmp};
+    }
+
+
+    @UseGuards(JwtAuthGuard)
+    @Get('all')
+    getAll() {
+        var tmp = this.leagueService.getAll();
+        return { leagues : tmp};
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @Get('not-joined')
+    getNotJoined(@Body() body) {
+        var tmp = this.leagueService.getNotJoined(body.Uid);
+        return { leagues : tmp};
+    }
+
+    @Post('register')
+    registerToLeague(@Body() body) {
+        var tmp =  this.leagueService.newRegistration(body.Uid, body.Lid);
+        return { registration : tmp}; 
     }
 }

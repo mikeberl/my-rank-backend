@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { Observable } from 'rxjs';
 import { League } from 'src/models/league.interface';
 import { Registration } from 'src/models/registration.interface';
 
@@ -40,17 +41,54 @@ export class LeagueService {
       var tmp : Registration[] = [];
       var tmp_league : League[] = [];
       this.registrations.forEach((reg : Registration)=> {
-        if(reg.Uid === Uid) {
+        if(reg.Uid == Uid) {
           tmp.push(reg);
+
         }
       })
       tmp.forEach((reg : Registration) => {
         this.leagues.forEach((league : League) => {
           if (league.Lid === reg.Lid) {
             tmp_league.push(league);
+            return league;
           }
         })
       })
       return tmp_league;
+    }
+
+    getAll() {
+      return this.leagues;
+    }
+
+    getNotJoined(Uid : number) {
+      var tmp : Registration[] = [];
+      var tmp_league : League[] = [];
+      this.registrations.forEach((reg : Registration)=> {
+        if(reg.Uid != Uid) {
+          tmp.push(reg);
+
+        }
+      })
+      tmp.forEach((reg : Registration) => {
+        this.leagues.forEach((league : League) => {
+          if (league.Lid === reg.Lid) {
+            tmp_league.push(league);
+            return league;
+          }
+        })
+      })
+      return tmp_league;
+      
+    }
+
+    newRegistration(Uid : number, Lid : number, expire_date? : Date) {
+        const reg : Registration = {
+          Uid : Uid,
+          Lid : Lid,
+        }
+
+        this.registrations.push(reg);
+        return reg;
     }
 }
