@@ -91,4 +91,15 @@ export class LeagueService {
         this.registrations.push(reg);
         return reg;
     }
+
+    leaveLeague(Uid : number, Lid : number) {
+      var i = 0;
+      this.registrations.forEach((reg : Registration)=> {
+        if(reg.Uid == Uid && reg.Lid == Lid) {
+          this.registrations.splice(i, 1);
+          return;
+        }
+        i++;
+      })
+    }
 }

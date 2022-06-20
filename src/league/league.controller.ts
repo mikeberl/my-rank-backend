@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Query, Request, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Query, Request, UseGuards } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { LeagueService } from './league.service';
@@ -34,6 +34,12 @@ export class LeagueController {
     @Post('register')
     registerToLeague(@Body() body) {
         var tmp =  this.leagueService.newRegistration(body.Uid, body.Lid);
+        return { registration : tmp}; 
+    }
+
+    @Delete('leave')
+    leaveLeague(@Body() body) {
+        var tmp =  this.leagueService.leaveLeague(body.Uid, body.Lid);
         return { registration : tmp}; 
     }
 }
