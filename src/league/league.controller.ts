@@ -38,8 +38,8 @@ export class LeagueController {
     }
 
     @Delete('leave')
-    leaveLeague(@Body() body) {
-        var tmp =  this.leagueService.leaveLeague(body.Uid, body.Lid);
+    leaveLeague(@Query('Uid') Uid, @Query('Lid') Lid) {
+        var tmp =  this.leagueService.leaveLeague(Uid, Lid);
         return { registration : tmp}; 
     }
 }

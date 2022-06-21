@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Observable } from 'rxjs';
+import { ignoreElements, Observable } from 'rxjs';
 import { League } from 'src/models/league.interface';
 import { Registration } from 'src/models/registration.interface';
 
@@ -13,7 +13,7 @@ export class LeagueService {
         {Lid : 4, name: 'Roundnet Milano', city: 'Milano', sport: 'Roundnet', admin_id : 4, img: '/assets/images/users/5.jpg', active: false},  
       ]
 
-    private readonly registrations : Registration[] = [
+    private registrations : Registration[] = [
       {
         Lid : 0,
         Uid : 1
@@ -94,12 +94,16 @@ export class LeagueService {
 
     leaveLeague(Uid : number, Lid : number) {
       var i = 0;
+      var regg : Registration | undefined = undefined;
       this.registrations.forEach((reg : Registration)=> {
-        if(reg.Uid == Uid && reg.Lid == Lid) {
-          this.registrations.splice(i, 1);
-          return;
+        if((reg.Uid == Uid) && (reg.Lid == Lid)) {
+          regg = this.registrations.splice(i, 1)[0];
         }
         i++;
       })
+      if (regg === undefined) {
+        return "Ei";
+      }
+      return regg;
     }
 }
