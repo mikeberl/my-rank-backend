@@ -42,4 +42,10 @@ export class LeagueController {
         var tmp =  this.leagueService.leaveLeague(Uid, Lid);
         return { registration : tmp}; 
     }
+
+    @Post('create')
+    createLeague(@Body() body) {
+        var tmp = this.leagueService.createLeague(body);
+        return { league : tmp };
+    }
 }

@@ -5,7 +5,7 @@ import { Registration } from 'src/models/registration.interface';
 
 @Injectable()
 export class LeagueService {
-    private readonly leagues : League[] = [
+    private leagues : League[] = [
         {Lid : 0, name: 'Roundnet BZ', city: 'Bolzano', sport: 'Roundnet', admin_id : 1, img: '/assets/images/users/1.jpg', active: true},
         {Lid : 1, name: 'Roundnet Padova', city: 'Padova', sport: 'Roundnet', admin_id : 2, img: '/assets/images/users/2.jpg', active: true},
         {Lid : 2, name: 'Roundnet Graz', city: 'Graz', sport: 'Roundnet', admin_id : 1, img: '/assets/images/users/3.jpg', active: true},
@@ -72,7 +72,7 @@ export class LeagueService {
       })
       tmp.forEach((reg : Registration) => {
         this.leagues.forEach((league : League) => {
-          if (league.Lid === reg.Lid) {
+          if (league.Lid == reg.Lid) {
             tmp_league.push(league);
             return league;
           }
@@ -101,9 +101,38 @@ export class LeagueService {
         }
         i++;
       })
-      if (regg === undefined) {
-        return "Ei";
-      }
       return regg;
     }
+
+    createLeague(body : any) {
+      var league : League = {
+        Lid : this.getNewId(),
+        name : body.name,
+        city : body.city,
+        active : true,
+        admin_id : body.admin_id,
+        img : "",
+        sport : ""
+      }
+      this.leagues.push(league);
+      return league;
+    }
+
+    getNewId() {
+      var i = 0;
+      while (i >= 0) {
+          var check_if_exist = false;
+          for (let u of this.leagues) {
+              if (i === u.Lid) {
+                  check_if_exist = true;
+                  break;
+              }
+          }
+          if (check_if_exist === false) {
+              break;
+          }
+          i++;
+      }
+      return i;
+  }
 }
