@@ -45,7 +45,8 @@ export class LeagueController {
 
     @Post('create')
     createLeague(@Body() body) {
-        var tmp = this.leagueService.createLeague(body);
+        var tmp = this.leagueService.newLeague(body);
+        console.log(tmp);
         return { league : tmp };
     }
 }

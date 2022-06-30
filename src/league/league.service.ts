@@ -5,7 +5,7 @@ import { Registration } from 'src/models/registration.interface';
 
 @Injectable()
 export class LeagueService {
-    private leagues : League[] = [
+    private readonly leagues : League[] = [
         {Lid : 0, name: 'Roundnet BZ', city: 'Bolzano', sport: 'Roundnet', admin_id : 1, img: '/assets/images/users/1.jpg', active: true},
         {Lid : 1, name: 'Roundnet Padova', city: 'Padova', sport: 'Roundnet', admin_id : 2, img: '/assets/images/users/2.jpg', active: true},
         {Lid : 2, name: 'Roundnet Graz', city: 'Graz', sport: 'Roundnet', admin_id : 1, img: '/assets/images/users/3.jpg', active: true},
@@ -13,7 +13,7 @@ export class LeagueService {
         {Lid : 4, name: 'Roundnet Milano', city: 'Milano', sport: 'Roundnet', admin_id : 4, img: '/assets/images/users/5.jpg', active: false},  
       ]
 
-    private registrations : Registration[] = [
+    private readonly registrations : Registration[] = [
       {
         Lid : 0,
         Uid : 1
@@ -74,7 +74,6 @@ export class LeagueService {
         this.leagues.forEach((league : League) => {
           if (league.Lid == reg.Lid) {
             tmp_league.push(league);
-            return league;
           }
         })
       })
@@ -104,18 +103,18 @@ export class LeagueService {
       return regg;
     }
 
-    createLeague(body : any) {
-      var league : League = {
+    newLeague(body : any) {
+      const league : League = {
         Lid : this.getNewId(),
         name : body.name,
         city : body.city,
         active : true,
         admin_id : body.admin_id,
-        img : "",
-        sport : ""
+        img : '/assets/images/users/1.jpg',
+        sport : 'Roundnet'
       }
       this.leagues.push(league);
-      return league;
+      return this.leagues;
     }
 
     getNewId() {
